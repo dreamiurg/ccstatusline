@@ -11,6 +11,7 @@ import {
     getContextConfig,
     getModelContextIdentifier
 } from '../utils/model-context';
+import { applyTokenWarning } from '../utils/renderer';
 
 import {
     getContextInverseModifierText,
@@ -54,7 +55,8 @@ export class ContextPercentageWidget implements Widget {
             const contextConfig = getContextConfig(modelIdentifier, contextWindowMetrics.windowSize);
             const usedPercentage = Math.min(100, (context.tokenMetrics.contextLength / contextConfig.maxTokens) * 100);
             const displayPercentage = isInverse ? (100 - usedPercentage) : usedPercentage;
-            return formatRawOrLabeledValue(item, 'Ctx: ', `${displayPercentage.toFixed(1)}%`);
+            const baseText = formatRawOrLabeledValue(item, 'Ctx: ', `${displayPercentage.toFixed(1)}%`);
+            return applyTokenWarning(baseText, context.tokenMetrics.contextLength, settings);
         }
 
         return null;

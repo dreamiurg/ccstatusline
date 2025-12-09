@@ -72,6 +72,33 @@ function resolveEffectiveTerminalWidth(
     return null;
 }
 
+export function applyTokenWarning(baseText: string, tokenCount: number, settings: Settings): string {
+    const tokenWarnings = settings.tokenWarnings as {
+        enabled?: boolean;
+        warningThreshold?: number;
+        criticalThreshold?: number;
+        showEmojis?: boolean;
+    } | undefined;
+
+    if (tokenWarnings?.enabled === false) {
+        return baseText;
+    }
+
+    const warningThreshold = tokenWarnings?.warningThreshold ?? 120000;
+    const criticalThreshold = tokenWarnings?.criticalThreshold ?? 140000;
+    const showEmojis = tokenWarnings?.showEmojis ?? true;
+
+    if (tokenCount >= criticalThreshold) {
+        const prefix = showEmojis ? '🔴 ' : '';
+        return chalk.bold.red.bgRed(prefix + baseText);
+    } else if (tokenCount >= warningThreshold) {
+        const prefix = showEmojis ? '⚠️  ' : '';
+        return chalk.bold.yellow(prefix + baseText);
+    }
+
+    return baseText;
+}
+
 function renderPowerlineStatusLine(
     widgets: WidgetItem[],
     settings: Settings,

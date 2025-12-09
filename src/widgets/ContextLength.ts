@@ -6,7 +6,10 @@ import type {
     WidgetItem
 } from '../types/Widget';
 import { getContextWindowContextLengthTokens } from '../utils/context-window';
-import { formatTokens } from '../utils/renderer';
+import {
+    applyTokenWarning,
+    formatTokens
+} from '../utils/renderer';
 
 export class ContextLengthWidget implements Widget {
     getDefaultColor(): string { return 'brightBlack'; }
@@ -24,11 +27,16 @@ export class ContextLengthWidget implements Widget {
 
         const contextLengthTokens = getContextWindowContextLengthTokens(context.data);
         if (contextLengthTokens !== null) {
-            return item.rawValue ? formatTokens(contextLengthTokens) : `Ctx: ${formatTokens(contextLengthTokens)}`;
+            const formattedLength = formatTokens(contextLengthTokens);
+            const baseText = item.rawValue ? formattedLength : `Ctx: ${formattedLength}`;
+            return applyTokenWarning(baseText, contextLengthTokens, settings);
         }
 
         if (context.tokenMetrics) {
-            return item.rawValue ? formatTokens(context.tokenMetrics.contextLength) : `Ctx: ${formatTokens(context.tokenMetrics.contextLength)}`;
+            const contextLength = context.tokenMetrics.contextLength;
+            const formattedLength = formatTokens(contextLength);
+            const baseText = item.rawValue ? formattedLength : `Ctx: ${formattedLength}`;
+            return applyTokenWarning(baseText, contextLength, settings);
         }
         return null;
     }
