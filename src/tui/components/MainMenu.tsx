@@ -12,6 +12,7 @@ import { List } from './List';
 export type MainMenuOption = 'lines'
     | 'colors'
     | 'powerline'
+    | 'taskTimer'
     | 'terminalConfig'
     | 'globalOverrides'
     | 'install'
@@ -61,6 +62,12 @@ export const MainMenu: React.FC<MainMenuProps> = ({
             value: 'powerline',
             description:
                 'Install Powerline fonts for enhanced visual separators and symbols in your status line'
+        },
+        {
+            label: '⏱️ Task Timer Setup',
+            value: 'taskTimer',
+            description:
+                'Install hooks to track and display task execution time in your status line'
         },
         '-' as const,
         {
@@ -120,6 +127,8 @@ export const MainMenu: React.FC<MainMenuProps> = ({
             }
         );
     }
+
+
 
     // Check if we should show the truncation warning
     const showTruncationWarning

@@ -36,3 +36,4 @@ export { ContextBarWidget } from './ContextBar';
 export { LinkWidget } from './Link';
 export { SkillsWidget } from './Skills';
 export { ThinkingEffortWidget } from './ThinkingEffort';
+export { TaskTimerWidget } from './TaskTimer';

@@ -51,6 +51,7 @@ import {
     MainMenu,
     PowerlineSetup,
     StatusLinePreview,
+    TaskTimerSetup,
     TerminalOptionsMenu,
     TerminalWidthMenu,
     type MainMenuOption
@@ -73,6 +74,7 @@ type AppScreen = 'main'
     | 'globalOverrides'
     | 'confirm'
     | 'powerline'
+    | 'taskTimer'
     | 'install';
 
 interface ConfirmDialogState {
@@ -263,6 +265,9 @@ export const App: React.FC = () => {
                 break;
             case 'powerline':
                 setScreen('powerline');
+                break;
+            case 'taskTimer':
+                setScreen('taskTimer');
                 break;
             case 'install':
                 handleInstallUninstall();
@@ -523,6 +528,13 @@ export const App: React.FC = () => {
                         installingFonts={installingFonts}
                         fontInstallMessage={fontInstallMessage}
                         onClearMessage={() => { setFontInstallMessage(null); }}
+                    />
+                )}
+                {screen === 'taskTimer' && (
+                    <TaskTimerSetup
+                        onBack={() => {
+                            setScreen('main');
+                        }}
                     />
                 )}
             </Box>
